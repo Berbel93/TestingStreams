@@ -6,20 +6,21 @@ import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
-import interfaces.InterfacePrint;
+import interfaces.IntroInterface;
 /**
  * @author PabloBerbel
  *
  * Clase para testear los streams
  */
-class StreamIntroduction implements InterfacePrint{
+class StreamIntroduction implements IntroInterface{
 	private static final int FILTER = 100; // Filtro para la suma de números
 	private long start; // Variable para guardar el tiempo de inicio del testeo
+	private long end; // Variable para guardar el tiempo final del testeo
 	private int sum; // Variable para guardar la suma de todos los números
 	
 	/**
-	 * Testeo del tiempo de la iteración interna del stream.
-	 * Sumamos todos los números de la lista menores que FILTER.
+	 * Testeo del tiempo de ejecución de la iteración interna del stream
+	 * Sumamos todos los números de la lista menores que FILTER
 	 * 
 	 * @param numbers: lista de números enteros
 	 */
@@ -31,11 +32,12 @@ class StreamIntroduction implements InterfacePrint{
 				.filter(n -> n < FILTER)
 				.reduce(0, Integer::sum); 
 		
-		allPrints(start, sum);
+		end = System.nanoTime();
+		allPrints(start, end, sum);
 	}
 	
 	/**
-	 * Testeo del tiempo de la iteración interna del stream	en paralelo
+	 * Testeo del tiempo de ejecución de la iteración interna del stream en paralelo
 	 * @param numbers: lista de números enteros
 	 */
 	void testInternalParallelIteration(List<Integer> numbers) {
@@ -45,12 +47,13 @@ class StreamIntroduction implements InterfacePrint{
 				.filter(n -> n < FILTER)
 				.reduce(0, Integer::sum);
 		
-		allPrints(start, sum);
+		end = System.nanoTime();
+		allPrints(start, end, sum);
 	}
 	
 	/**
-	 * Testeo del tiempo de la iteración interna del stream en paralelo
-	 * usando la clase IntStream
+	 * Testeo del tiempo de ejecución de la iteración interna del stream 
+	 * en paralelo usando la clase IntStream
 	 * @param numbers: lista de números enteros
 	 */
 	void testIntStream(List<Integer> numbers) {
@@ -59,12 +62,12 @@ class StreamIntroduction implements InterfacePrint{
 		IntStream stream = numbers.parallelStream().mapToInt(Integer::intValue);
 		sum = stream.filter(n -> n < FILTER).reduce(0, Integer::sum);
 		
-		allPrints(start, sum);
+		end = System.nanoTime();
+		allPrints(start, end, sum);	
 	}
 	
 	/**
-	 * Testeo de la nueva clase Optional para tratar con NullPointerException de una 
-	 * forma más agradable
+	 * Testeo de la nueva clase Optional para tratar con NullPointerException de una forma más agradable
 	 */
 	void testOptional() {
 		// Optional con el valor "Testing Optional"
@@ -96,7 +99,7 @@ class StreamIntroduction implements InterfacePrint{
 	}
 	
 	/**
-	 * Imprime por pantalla que estamos utilizando stream para el testeo
+	 * Imprime por pantalla que estamos utilizando streams para el testeo
 	 */
 	@Override
 	public void myPrint() {
